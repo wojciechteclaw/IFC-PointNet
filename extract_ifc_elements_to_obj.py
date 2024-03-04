@@ -78,7 +78,7 @@ for f in files:
             success, vertices, faces, shape_guid, geometry_id, location, rotation = get_geometry(elem)
             if success:
                 if geometry_id not in unique_geometry:
-                    with open(f"{DESTINATION}\\{x:06}_{elem.is_a()}_({file_name}).obj", 'w+', encoding="utf-8") as new_file:
+                    with open(f"{DESTINATION}\\{x:06}_{elem.is_a()}.obj", 'w+', encoding="utf-8") as new_file:
                         new_file.write(f"# Source file: '{f}'\n")
                         new_file.write(f"# GlobalId: '{elem.GlobalId}'\n")
                         new_file.write(f"# entity: '{elem.is_a()}'\n")
