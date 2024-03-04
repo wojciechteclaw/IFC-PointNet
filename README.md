@@ -26,3 +26,20 @@ IFC... Often misclassified... To ensure quality of the data... Based on geometry
 ### How to use it
 
 1. To be developed...
+
+### Dataset we used to train the model
+
+We extracted 884008 IFC elements from 245 publicly available IFC files mostly from libraries of: 
+- The University of Auckland, https://openifcmodel.cs.auckland.ac.nz/
+- RWTH Aachen University, https://github.com/RWTH-E3D/DigitalHub
+- Karlsruhe Institute of Technology, https://www.ifcwiki.org/index.php?title=KIT_IFC_Examples
+- buildingSMART International, https://github.com/buildingSMART/Sample-Test-Files
+- OSArch https://wiki.osarch.org/index.php?title=AECO_Workflow_Examples
+
+The distribution of elements in the dataset:
+
+<img src="https://github.com/wojciechteclaw/IFC-PointNet/assets/22922395/cf940db4-4e62-4f55-9b89-499835e2c27e" width="600">
+
+The average resolution of vertices per element:
+
+<img src="https://github.com/wojciechteclaw/IFC-PointNet/assets/22922395/872425e3-f3be-464f-be3f-83ddbf2d0f69" width="900">
