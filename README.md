@@ -36,6 +36,22 @@ We extracted 884008 IFC elements from 245 publicly available IFC files mostly fr
 - buildingSMART International, https://github.com/buildingSMART/Sample-Test-Files
 - OSArch https://wiki.osarch.org/index.php?title=AECO_Workflow_Examples
 
+Each OBJ file contains vertices and faces of a triangular mesh, as well as a header with metadata, for example:
+
+```
+# Source file: 'OpenIfcModel.Auckland.NZ_0912101-02wall_opening_straight_ac_1.ifc'
+# GlobalId: '3m$GcQbwH0b9V0tqrRtMu_'
+# entity: 'IfcDoor'
+# Name: D02
+# ObjectType: None
+# location: [-22.,26.148,0.]
+# rotation: [[0.,1.,0.],[-1.,0.,0.],[0.,0.,1.]]
+```
+
+The geometry of IfcDoor example visualized in Blender:
+
+<img src="https://github.com/wojciechteclaw/IFC-PointNet/assets/22922395/9c1ed5ee-cf1e-40ea-9052-1e0893b6456c" width="500">
+
 The distribution of elements in the dataset:
 
 <img src="https://github.com/wojciechteclaw/IFC-PointNet/assets/22922395/cf940db4-4e62-4f55-9b89-499835e2c27e" width="600">
