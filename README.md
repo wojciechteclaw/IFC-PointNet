@@ -29,7 +29,9 @@ IFC... Often misclassified... To ensure quality of the data... Based on geometry
 
 ### Dataset we used to train the model
 
-We extracted 884008 IFC elements from 245 publicly available IFC files mostly from libraries of: 
+The full dataset used for the training of the model is published on Zenodo: https://doi.org/10.5281/zenodo.10730758
+
+To obtain the dataset, we extracted 884008 IFC elements from 245 publicly available IFC files mostly from libraries of: 
 - The University of Auckland, https://openifcmodel.cs.auckland.ac.nz/
 - RWTH Aachen University, https://github.com/RWTH-E3D/DigitalHub
 - Karlsruhe Institute of Technology, https://www.ifcwiki.org/index.php?title=KIT_IFC_Examples
