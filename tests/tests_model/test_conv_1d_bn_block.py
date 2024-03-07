@@ -1,3 +1,5 @@
+import random
+
 from src.model.conv_1d_bn_block import Conv1dBN
 import torch
 import unittest
@@ -12,8 +14,9 @@ class Conv1dBnTestBase():
 		self.out_channels = out_channels
 		self.conv1d_bn = Conv1dBN(in_channels=self.in_channels, out_channels=self.out_channels)
 		self.number_of_points = number_of_points
+		self.random_number_of_meshes = random.randint(1, 10)
 		
-		self.x = torch.randn((1, self.in_channels, self.number_of_points), dtype=torch.float32)
+		self.x = torch.randn((self.random_number_of_meshes, self.in_channels, self.number_of_points), dtype=torch.float32)
 		
 	def test_in_channels_should_return_int_as_set(self):
 		assert self.conv1d_bn.in_channels == self.in_channels
@@ -29,8 +32,7 @@ class Conv1dBnTestBase():
 		
 	def test_forward_should_return_expected_output_shape(self):
 		result = self.conv1d_bn(self.x)
-		# simulate a single mesh
-		assert result.shape == (1, self.out_channels, self.number_of_points)
+		assert result.shape == (self.random_number_of_meshes, self.out_channels, self.number_of_points)
 		
 	def test_forward_shouldnot_return_nan(self):
 		result = self.conv1d_bn(self.x)
