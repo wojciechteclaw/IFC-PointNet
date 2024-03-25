@@ -15,22 +15,16 @@ logging.basicConfig(level=logging.INFO, filename=f'logs\\Log_{now.strftime("%Y.%
 
 
 def get_geometry(element):
-    
     try: 
         shape = ifcopenshell.geom.create_shape(settings, element)
 
         if shape:
             # X Y Z of vertices in flattened list e.g. [v1x, v1y, v1z, v2x, v2y, v2z, ...]
             verts = shape.geometry.verts
-            
-            ## Indices of vertices per edge e.g. [e1v1, e1v2, e2v1, e2v2, ...]
-            # edges = shape.geometry.edges
-            
             # Indices of vertices per triangle face e.g. [f1v1, f1v2, f1v3, f2v1, f2v2, f2v3, ...]. Note that faces are always triangles.
             faces = shape.geometry.faces
             #spit into sublists:
             faces = [faces[i * 3:(i + 1) * 3] for i in range((len(faces) + 2) // 3 )]
-
             # A 4x4 matrix representing the location and rotation of the element, in the form:
             # [ [ x_x, y_x, z_x, x   ]
             #   [ x_y, y_y, z_y, y   ]
@@ -44,9 +38,8 @@ def get_geometry(element):
             # The axes follow a right-handed coordinate system.
             # Objects are never scaled, so the scale factor of the matrix is always 1.
             matrix = shape.transformation.matrix.data
-            # For convenience, you might want the matrix as a nested numpy array, so you can do matrix math.
             matrix = ifcopenshell.util.shape.get_shape_matrix(shape)
-            # You can also extract the XYZ location of the matrix.
+            # Extract the XYZ location and rotation of the matrix:
             location = np.array2string(matrix[:,3][0:3], separator=',', precision=3, suppress_small=True).replace(' ', '').replace('\n', '')
             rotation = np.array2string(matrix[:3, :3], separator=',', precision=3, suppress_small=True).replace(' ', '').replace('\n', '')
             return True, verts, faces, shape.guid, shape.geometry.id, location, rotation
@@ -57,8 +50,8 @@ def get_geometry(element):
         return False, False, False, False, False, False, False
 
 
-SOURCE = r"your\file\path"
-DESTINATION = r"your\file\path"
+SOURCE = r"C:\Code\IFCextract\tests\3_source_models"
+DESTINATION = r"C:\Code\IFCextract\tests\5_output"
 
 files = os.listdir(SOURCE)
 
