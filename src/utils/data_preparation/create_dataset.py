@@ -5,6 +5,10 @@ from tqdm import tqdm
 import numpy as np
 from pathlib import Path
 from sklearn.model_selection import train_test_split
+
+from src.model.conv_1d_bn_block import Conv1dBN
+from src.model.dense_linear_bn_layer import DenseLinearBN
+
 from .data_preparation.PointCloudDataset import PointCloudDataset
 
 def create_loaders(dir_path, test_ratio=0.20, validation_ratio=0.10):
