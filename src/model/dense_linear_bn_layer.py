@@ -14,7 +14,8 @@ class DenseLinearBN(nn.Module):
 		
 		def forward(self, x):
 			x = self.dense(x)
-			x = self.bn(x)
+			if x.shape[0] > 1:
+				x = self.bn(x)
 			return F.relu(x)
 
 		@property
