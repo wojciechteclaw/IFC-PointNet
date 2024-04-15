@@ -7,6 +7,7 @@ import sys
 import logging
 
 
+# TODO: I would suggest to add this methods to some class like IfcElementProcessor
 def obj_to_xyz(file_path, point_count=2048, output_directory=False):
 
     if file_path.lower().endswith(".obj"):
@@ -38,6 +39,7 @@ def obj_to_xyz(file_path, point_count=2048, output_directory=False):
         logging.debug(f"Saved file {new_path}")
 
 
+# TODO: Remove this function of mesh_normalizer.py - redundant code
 def normalize_geometry(mesh, min=0.0, max=1.0):
     # Calculate the bounding box's size in each dimensions
     dimensions = mesh.bounds[1] - mesh.bounds[0]
@@ -54,7 +56,7 @@ def normalize_geometry(mesh, min=0.0, max=1.0):
     # mesh.apply_transform(matrix)
     return mesh, 1 / scale_factor
 
-
+# TODO: Move to a separate file like: src/process_data.py...
 if __name__ == "__main__":
     FOLDER_PATH = sys.argv[0]
     POINT_COUNT = sys.argv[1]
