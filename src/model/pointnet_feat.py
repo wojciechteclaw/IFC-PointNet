@@ -5,6 +5,7 @@ from src.model.stnet3d import STNet3d
 from src.model.stnetkd import STNetkd
 
 class PointNetfeat(nn.Module):
+    """Feature transformer - converts XYZ into features vector (Nx1024)"""
     def __init__(self, global_feat=True, feature_transform=False):
         super(PointNetfeat, self).__init__()
         self.stn = STNet3d()

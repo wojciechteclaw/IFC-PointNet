@@ -1,10 +1,10 @@
 import unittest
 import torch
-from src.model.pointnet_cls import PointNetCls
+from src.model.pointnet_classifier import PointNetClassifier
 
 class PointNetClsTestBase():
     def setUpTestEntity(self, num_classes, feature_transform):
-        self.pointnetcls = PointNetCls(num_classes=num_classes, feature_transform=feature_transform)
+        self.pointnetcls = PointNetClassifier(num_classes=num_classes, feature_transform=feature_transform)
         self.k = num_classes
         self.feature_transform = feature_transform
         self.random_number_of_meshes = torch.randint(1, 10, (1,)).item()
