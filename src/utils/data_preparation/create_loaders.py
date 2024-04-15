@@ -1,11 +1,8 @@
 import os
-import torch
-from torch.utils.data import Dataset, DataLoader
+from torch.utils.data import DataLoader
 from tqdm import tqdm
-import numpy as np
-from pathlib import Path
 from sklearn.model_selection import train_test_split
-from .data_preparation.PointCloudDataset import PointCloudDataset
+from src.utils.data_preparation.point_cloud_dataset import PointCloudDataset
 
 def create_loaders(dir_path, test_ratio=0.20, validation_ratio=0.10):
     """To simplify data preparation, this method returns the three loaders: train, validation, test"""
