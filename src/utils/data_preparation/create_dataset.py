@@ -1,12 +1,11 @@
 import os
-from torch.utils.data import DataLoader
 from tqdm import tqdm
 from sklearn.model_selection import train_test_split
 from src.utils.data_preparation.point_cloud_dataset import PointCloudDataset
 
 # OPTIONAL I would suggest to move this method to some class like LoadersGenerator
 # and then add a static method to create_loaders
-def create_loaders(dir_path, test_ratio=0.20, validation_ratio=0.10):
+def create_dataset(dir_path, test_ratio=0.20, validation_ratio=0.10):
     """To simplify data preparation, this method returns the three loaders: train, validation, test"""
 
     object_paths = []
@@ -54,14 +53,8 @@ def create_loaders(dir_path, test_ratio=0.20, validation_ratio=0.10):
     train_dataset = PointCloudDataset(file_paths=train_paths)
     valid_dataset = PointCloudDataset(file_paths=valid_paths)
     test_dataset = PointCloudDataset(file_paths=test_paths)
-    # Create a DataLoader
-    # TODO move to training loop. Return datasets only.
-    # It is much easier to adjust the number of workers and batch size depending upon the hardware limitations
-    # and the size of the dataset.
-    train_loader = DataLoader(train_dataset, batch_size=4, shuffle=True, num_workers=2)
-    valid_loader = DataLoader(valid_dataset, batch_size=4, shuffle=True, num_workers=2)
-    test_loader = DataLoader(test_dataset, batch_size=4, shuffle=False, num_workers=2)
-    return train_loader, valid_loader, test_loader
+    
+    return train_dataset, valid_dataset, test_dataset
 
 
 # TODO Remove - write tests if necessary to check the correctness of the solution
@@ -70,7 +63,7 @@ if __name__ == "__main__":
 
     ROOT = r"data\sample_1000_XYZ"
 
-    train, valid, test = create_loaders(ROOT, test_ratio=0.20, validation_ratio=0.10)
+    train, valid, test = create_dataset(ROOT, test_ratio=0.20, validation_ratio=0.10)
 
     # Iterate through the dataset
     for batch in train:
