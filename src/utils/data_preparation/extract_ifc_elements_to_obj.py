@@ -14,6 +14,8 @@ now = datetime.now()
 logging.basicConfig(level=logging.INFO, filename=f'logs\\Log_{now.strftime("%Y.%m.%d_%H.%M.%S")}.log', filemode='w', format='%(asctime)s %(levelname)s - %(message)s')
 
 
+# TODO: Think about the usage of namedtuple: https://www.geeksforgeeks.org/namedtuple-in-python/
+# This is your expertise, therefore I will not touch it.
 def get_geometry(element):
     try: 
         shape = ifcopenshell.geom.create_shape(settings, element)

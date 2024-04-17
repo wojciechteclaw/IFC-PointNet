@@ -1,3 +1,7 @@
+import trimesh as trimesh
+from src.utils.data_normalization.normalization_strategy import NormalizationStrategy
+
+
 class MeshNormalizer:
 
     @staticmethod
