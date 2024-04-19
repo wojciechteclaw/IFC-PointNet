@@ -4,12 +4,6 @@ import torch
 from src.utils.data_preparation.create_dataset import create_dataset
 from src.model.pointnet_classifier import PointNetClassifier
 
-    # TODO looks like we already have dataloaders below, but can't see where batch size and worksers are configured 
-	# Create a DataLoader
-    # train_loader = DataLoader(train_dataset, batch_size=4, shuffle=True, num_workers=2)
-    # valid_loader = DataLoader(valid_dataset, batch_size=4, shuffle=True, num_workers=2)
-    # test_loader = DataLoader(test_dataset, batch_size=4, shuffle=False, num_workers=2)
-
 
 def train(model: torch.nn.Module,
 		  train_loader: torch.utils.data.DataLoader,
@@ -62,8 +56,13 @@ if __name__ == "__main__":
 	
 	epochs = 1024
 	
-	train_loader, validation_loader, test_loader = create_dataset(DATASET_PATH, test_ratio=0.20, validation_ratio=0.10)
+	train_dataset, validation_dataset, test_dataset = create_dataset(DATASET_PATH, test_ratio=0.20, validation_ratio=0.10)
 	
+	# Create a DataLoader
+	train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=4, shuffle=True, num_workers=2)
+	validation_loader = torch.utils.data.DataLoader(validation_dataset, batch_size=4, shuffle=True, num_workers=2)
+	test_loader = torch.utils.data.DataLoader(test_dataset, batch_size=4, shuffle=False, num_workers=2)
+
 	model = PointNetClassifier()
 	device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 	loss_fn = torch.nn.CrossEntropyLoss()
