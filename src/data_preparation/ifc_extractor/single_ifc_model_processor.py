@@ -28,11 +28,11 @@ class SingleIfcModelProcessor:
 		for ifc_element in self._ifc_model:
 			global_id = SingleIfcModelProcessor._get_element_global_id(ifc_element)
 			if global_id:
-				ifc_element_geometry_extractor = IfcElementGeometryExtractor(ifc_element=ifc_element,
-																			 output_directory=self._extracted_elements_dir_path,
-																			 source_model_name=self._source_model_name,
-																			 settings=self._settings)
-				ifc_element_geometry_extractor.extract_geometry()
+				ifc_extractor = IfcElementGeometryExtractor( ifc_element=ifc_element,
+															 output_directory=self._extracted_elements_dir_path,
+															 source_model_name=self._source_model_name,
+															 settings=self._settings)
+				ifc_extractor.extract_geometry()
 		return True
 	
 	@staticmethod

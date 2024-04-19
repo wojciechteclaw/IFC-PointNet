@@ -21,15 +21,21 @@ class IfcModelsExtractor:
 		return ifc_model_paths
 	
 	def process_model(self, ifc_model_path):
-		ifc_model_processor = SingleIfcModelProcessor(ifc_model_path, self._extracted_elements_dir_path)
+		ifc_model_processor = SingleIfcModelProcessor(ifc_model_path=ifc_model_path,
+													  extracted_elements_dir_path=self._extracted_elements_dir_path)
 		ifc_model_processor.setup_ifc_file()
 		success = ifc_model_processor.process_single_ifc_model()
 		if not success:
 			logging.error(f"Error while processing {ifc_model_path}")
 	
-	def extract_elements(self):
+	def extract_elements(self, use_multiprocessing: bool = False, num_workers: int = 10):
 		ifc_model_paths = self.extract_ifc_path_from_all_dirs()
-		with ThreadPoolExecutor(max_workers=10) as executor:
-			futures = [executor.submit(self.process_model, path) for path in tqdm(ifc_model_paths)]
-			for future in as_completed(futures):
-				future.result()
+		if use_multiprocessing:
+			assert num_workers > 0
+			with ThreadPoolExecutor(max_workers=num_workers) as executor:
+				futures = [executor.submit(self.process_model, path) for path in tqdm(ifc_model_paths)]
+				for future in as_completed(futures):
+					future.result()
+		else:
+			for path in tqdm(ifc_model_paths):
+				self.process_model(path)

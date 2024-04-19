@@ -42,12 +42,9 @@ class IfcElementGeometryExtractor:
 	def extract_geometry(self):
 		geometry_entity = self.get_geometry()
 		if geometry_entity.valid:
-			
 			object_class = self._ifc_element.is_a()
 			object_type = self._ifc_element.ObjectType
 			object_name = self._ifc_element.Name
-			
-			
 			ifc_entity = IfcEntity(ifc_geometry_entity=geometry_entity,
 								   object_class=object_class,
 								   object_name=object_name,
