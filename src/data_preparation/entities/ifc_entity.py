@@ -26,8 +26,6 @@ class IfcEntity:
 		self._rotation = ifc_geometry_entity.rotation
 		self._source_file_name = source_file_name
 		self._vertices = ifc_geometry_entity.vertices
-		
-		self.trimesh_instance = None
 
 	def dump(self, output_directory:str):
 		try:
