@@ -1,4 +1,6 @@
 import os
+import shutil
+
 import numpy as np
 import pytest
 import trimesh
@@ -22,7 +24,10 @@ def test_normalize_zero_to_one():
     assert max_vals.max() == 1
     assert np.equal(min_vals, 0).any()
     mesh.vertices = result
-    mesh.export(os.path.join(assets_path, "test_result_1.obj"))
+    resulting_dir = os.path.join(assets_path, "results")
+    if not os.path.exists(resulting_dir):
+        os.makedirs(resulting_dir)
+    mesh.export(os.path.join(resulting_dir, "test_result_1.obj"))
 
 
 def test_normalize_minus_one_to_one():
@@ -36,7 +41,10 @@ def test_normalize_minus_one_to_one():
     assert min_vals.min() == -1
     assert np.isclose(max_vals + min_vals, 0).all()
     mesh.vertices = result
-    mesh.export(os.path.join(assets_path, "test_result_2.obj"))
+    resulting_dir = os.path.join(assets_path, "results")
+    if not os.path.exists(resulting_dir):
+        os.makedirs(resulting_dir)
+    mesh.export(os.path.join(resulting_dir, "test_result_2.obj"))
 
 @pytest.mark.parametrize("strategy, max_coord, min_coord", [
     (NormalizationStrategy.ZERO_TO_ONE, 1, 0),
@@ -64,3 +72,8 @@ def test_normalize__when_strategy_not_defined():
     min_vals = result.vertices.min(axis=0)
     max_vals = result.vertices.max(axis=0)
     assert np.any(max_vals - min_vals > 2)
+
+
+def test_cleanup():
+    resulting_dir = os.path.join(assets_path, "results")
+    shutil.rmtree(resulting_dir)

@@ -31,7 +31,7 @@ class IfcEntity:
 
 	def dump(self, output_directory:str):
 		try:
-			file_name = f"{self._object_class}_{uuid.uuid4()}.pkl"
+			file_name = f"{self._object_class}_{uuid.uuid4()}.pkl".lower()
 			file_path = osp.join(output_directory, self._object_class, file_name)
 			if not osp.exists(osp.join(output_directory, self._object_class)):
 				os.makedirs(osp.join(output_directory, self._object_class))

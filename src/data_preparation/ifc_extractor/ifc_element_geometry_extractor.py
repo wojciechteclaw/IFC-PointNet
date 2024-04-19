@@ -35,7 +35,7 @@ class IfcElementGeometryExtractor:
 										 vertices=vertices)
 		except:
 			pass
-		return IfcGeometryEntity(faces=None, guid=None, location=None, rotation=None, valid=False, vertices=None)
+		return IfcGeometryEntity()
 		
 			
 		
