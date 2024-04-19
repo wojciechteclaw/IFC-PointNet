@@ -1,7 +1,6 @@
 import unittest
-
 import numpy as np
-import pytest
+
 from src.data_preparation.entities.ifc_geometry_entity import IfcGeometryEntity
 
 

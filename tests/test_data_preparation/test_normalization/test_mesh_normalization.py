@@ -61,7 +61,7 @@ def test_normalize(strategy, max_coord, min_coord):
     fig1 = plt.figure(figsize=(8, 6))
     a = fig1.add_subplot(111, projection='3d')
     a.scatter(samplePoints[:, 0], samplePoints[:, 1], samplePoints[:, 2], color='g')
-    fig1.suptitle('Normalization -0.5 to 0.5 with rotation', fontsize=20)
+    fig1.suptitle(f'Normalization {strategy.value}', fontsize=20)
     plt.show()
     print('test')
 
