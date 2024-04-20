@@ -14,6 +14,7 @@ files = [
 ]
 
 # Process each file
+# TODO: Remove comments, code is self-explanatory
 for file in files:
     # Extract category from the file name
     id_number, category = file.split("_", 1)
