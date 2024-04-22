@@ -6,8 +6,8 @@ import pytest
 import trimesh
 from matplotlib import pyplot as plt
 
-from src.data_preparation.normalization.mesh_normalizer import MeshNormalizer
-from src.data_preparation.normalization.enums.normalization_strategy import NormalizationStrategy
+from src.dataset.normalization.mesh_normalizer import MeshNormalizer
+from src.dataset.normalization.enums.normalization_strategy import NormalizationStrategy
 
 current_dir = os.path.dirname(os.path.realpath(__file__))
 sample_element_name = "norm_test_duct.obj"
@@ -54,14 +54,14 @@ def test_normalize(strategy, max_coord, min_coord):
     mesh = trimesh.load(correct_obj_file)
     ifc_normalization_result = MeshNormalizer.normalize(mesh, strategy)
     result = ifc_normalization_result.mesh
-    samplePoints = result.sample(2048)
+    sample_points = result.sample(2048)
     min_vals = result.vertices.min(axis=0)
     max_vals = result.vertices.max(axis=0)
     assert max_vals.max() == max_coord
     assert min_vals.min() == min_coord
     fig1 = plt.figure(figsize=(8, 6))
     a = fig1.add_subplot(111, projection='3d')
-    a.scatter(samplePoints[:, 0], samplePoints[:, 1], samplePoints[:, 2], color='g')
+    a.scatter(sample_points[:, 0], sample_points[:, 1], sample_points[:, 2], color='g')
     fig1.suptitle(f'Normalization {strategy.value}', fontsize=20)
     plt.show()
     print('test')

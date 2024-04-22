@@ -1,7 +1,7 @@
 import trimesh
 
-from src.data_preparation.normalization.models.ifc_entity_normalization_result_model import IfcEntityNormalizationResultModel
-from src.data_preparation.normalization.enums.normalization_strategy import NormalizationStrategy
+from src.dataset.normalization.models.ifc_entity_normalization_result_model import IfcEntityNormalizationResultModel
+from src.dataset.normalization.enums.normalization_strategy import NormalizationStrategy
 
 
 class MeshNormalizer:

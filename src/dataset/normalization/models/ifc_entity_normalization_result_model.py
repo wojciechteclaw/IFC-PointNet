@@ -1,6 +1,6 @@
 import trimesh
 
-from src.data_preparation.normalization.enums.normalization_strategy import NormalizationStrategy
+from src.dataset.normalization.enums.normalization_strategy import NormalizationStrategy
 
 
 class IfcEntityNormalizationResultModel:

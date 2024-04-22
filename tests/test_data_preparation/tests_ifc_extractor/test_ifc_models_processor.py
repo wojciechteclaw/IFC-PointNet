@@ -23,4 +23,4 @@ def test_extract_elements():
 	
 def test_cleanup():
     resulting_dir = os.path.join(assets_path, "results")
-    # shutil.rmtree(resulting_dir)
+    shutil.rmtree(resulting_dir)
