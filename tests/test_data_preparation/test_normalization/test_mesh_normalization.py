@@ -6,7 +6,7 @@ import pytest
 import trimesh
 from matplotlib import pyplot as plt
 
-from src.data_preparation.normalization.normalizer import Normalizer
+from src.data_preparation.normalization.mesh_normalizer import MeshNormalizer
 from src.data_preparation.enums.normalization_strategy import NormalizationStrategy
 
 current_dir = os.path.dirname(os.path.realpath(__file__))
@@ -17,7 +17,7 @@ correct_obj_file = os.path.join(assets_path, sample_element_name)
 
 def test_normalize_zero_to_one():
     mesh = trimesh.load(correct_obj_file)
-    result = Normalizer.normalize_zero_to_one(mesh)
+    result, _ = MeshNormalizer.normalize_zero_to_one(mesh)
     min_vals = result.min(axis=0)
     max_vals = result.max(axis=0)
     assert isinstance(result, np.ndarray)
@@ -33,7 +33,7 @@ def test_normalize_zero_to_one():
 def test_normalize_minus_one_to_one():
     # mesh should be centered around 0
     mesh = trimesh.load(correct_obj_file)
-    result = Normalizer.normalize_minus_one_to_one(mesh)
+    result, _ = MeshNormalizer.normalize_minus_one_to_one(mesh)
     min_vals = result.min(axis=0)
     max_vals = result.max(axis=0)
     assert isinstance(result, np.ndarray)
@@ -52,7 +52,8 @@ def test_normalize_minus_one_to_one():
 ])
 def test_normalize(strategy, max_coord, min_coord):
     mesh = trimesh.load(correct_obj_file)
-    result = Normalizer.normalize(mesh, strategy)
+    ifc_normalization_result = MeshNormalizer.normalize(mesh, strategy)
+    result = ifc_normalization_result.mesh
     samplePoints = result.sample(2048)
     min_vals = result.vertices.min(axis=0)
     max_vals = result.vertices.max(axis=0)
@@ -68,9 +69,9 @@ def test_normalize(strategy, max_coord, min_coord):
 
 def test_normalize__when_strategy_not_defined():
     mesh = trimesh.load(correct_obj_file)
-    result = Normalizer.normalize(mesh)
-    min_vals = result.vertices.min(axis=0)
-    max_vals = result.vertices.max(axis=0)
+    result = MeshNormalizer.normalize(mesh)
+    min_vals = result.mesh.vertices.min(axis=0)
+    max_vals = result.mesh.vertices.max(axis=0)
     assert np.any(max_vals - min_vals > 2)
 
 
