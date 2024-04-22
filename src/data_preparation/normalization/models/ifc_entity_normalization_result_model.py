@@ -1,6 +1,6 @@
 import trimesh
 
-from src.data_preparation.enums.normalization_strategy import NormalizationStrategy
+from src.data_preparation.normalization.enums.normalization_strategy import NormalizationStrategy
 
 
 class IfcEntityNormalizationResultModel:
@@ -20,7 +20,3 @@ class IfcEntityNormalizationResultModel:
 	@property
 	def normalization_factor(self):
 		return self._normalization_factor
-	
-	@property
-	def normalization_strategy(self):
-		return self._normalization_strategy

@@ -7,7 +7,7 @@ import trimesh
 from matplotlib import pyplot as plt
 
 from src.data_preparation.normalization.mesh_normalizer import MeshNormalizer
-from src.data_preparation.enums.normalization_strategy import NormalizationStrategy
+from src.data_preparation.normalization.enums.normalization_strategy import NormalizationStrategy
 
 current_dir = os.path.dirname(os.path.realpath(__file__))
 sample_element_name = "norm_test_duct.obj"
