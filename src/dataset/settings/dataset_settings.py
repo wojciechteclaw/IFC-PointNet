@@ -20,6 +20,7 @@ class DatasetSettings:
 
 		self._ifc_classes = self.__get_valid_ifc_categories(ifc_classes)
 		self._dataset_name = self.__get_dataset_name(dataset_name)
+		self._dataset_path = osp.join(self.output_path, self.dataset_name)
 	
 	def __get_valid_ifc_categories(self, ifc_categories: List[str]=[]):
 		valid_ifc_categories = []
@@ -51,6 +52,10 @@ class DatasetSettings:
 		return self._dataset_name
 	
 	@property
+	def dataset_path(self):
+		return self._dataset_path
+	
+	@property
 	def datasplit(self):
 		return self._datasplit
 	
@@ -73,3 +78,15 @@ class DatasetSettings:
 	@property
 	def raw_data_path(self):
 		return self._raw_data_path
+	
+	@property
+	def testing_data_ratio(self):
+		return self._datasplit.testing_ratio
+	
+	@property
+	def validating_data_ratio(self):
+		return self._datasplit.validating_ratio
+	
+	@property
+	def training_data_ratio(self):
+		return self._datasplit.training_ratio
