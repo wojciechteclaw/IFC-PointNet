@@ -47,7 +47,7 @@ class DatasetSettings:
 			if not len(self.ifc_classes) > 0:
 				raise ValueError("No valid IFC classes found")
 			classes = len(self.ifc_classes)
-			return f"{self.normalization.value}_{classes}_classes_with_{self.number_of_point_per_mesh}_points_per_mesh-min_{self.minimum_number_of_items_for_class}_items_per_class"
+			return f"N-{self._normalization.value}_{classes}_classes_with_{self.number_of_point_per_mesh}_points_per_mesh-min_{self.minimum_number_of_items_for_class}_items_per_class"
 	
 	@property
 	def dataset_name(self):

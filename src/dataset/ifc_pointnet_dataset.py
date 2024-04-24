@@ -39,7 +39,7 @@ class IfcPointNetDataset:
 			ifc_class = self._ifc_classes_map.get(ifc_class, -1)
 			self._data.append((tensor, ifc_class))
 		self.save()
-
+		
 	def save(self):
 		path = self.get_path()
 		torch.save(self._data, path)
