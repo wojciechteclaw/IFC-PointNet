@@ -3,6 +3,7 @@ import os.path as osp
 from typing import List
 
 from src.dataset.settings.data_split import DataSplit
+from src.dataset.normalization.enums.normalization_strategy import NormalizationStrategy
 
 
 class DatasetSettings:
@@ -14,6 +15,7 @@ class DatasetSettings:
 		self._minimum_number_of_items_for_class = kwargs.get('minimum_number_of_items_for_class', 0)
 		self._number_of_point_per_mesh = kwargs.get('number_of_point_per_mesh', 2048)
 		self._output_path = kwargs.get('output_path', "../data/")
+		self._normalization:NormalizationStrategy = kwargs.get('normalization', NormalizationStrategy.NO_NORMALIZATION)
 		
 		ifc_classes = kwargs.get('ifc_classes', [])
 		dataset_name = kwargs.get('dataset_name', "")
@@ -45,7 +47,7 @@ class DatasetSettings:
 			if not len(self.ifc_classes) > 0:
 				raise ValueError("No valid IFC classes found")
 			classes = len(self.ifc_classes)
-			return f"{classes}_classes_with_{self.number_of_point_per_mesh}_points_per_mesh-min_{self.minimum_number_of_items_for_class}_items_per_class"
+			return f"{self.normalization.value}_{classes}_classes_with_{self.number_of_point_per_mesh}_points_per_mesh-min_{self.minimum_number_of_items_for_class}_items_per_class"
 	
 	@property
 	def dataset_name(self):
