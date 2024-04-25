@@ -31,12 +31,12 @@ class PointNetClsTestBase():
 
 class TestPointNetClsWithFeatureTransform(unittest.TestCase, PointNetClsTestBase):
     def setUp(self):
-        self.setUpTestEntity(num_classes=21, feature_transform=False, number_of_sample_points=841)
+        self.setUpTestEntity(num_classes=21, feature_transform=False, points_per_mesh=841)
 
 class TestPointNetClsWithFeatureTransformAndAdditionalPoints(unittest.TestCase, PointNetClsTestBase):
     def setUp(self):
-        self.setUpTestEntity(num_classes=37, feature_transform=True, number_of_sample_points=4096)
+        self.setUpTestEntity(num_classes=37, feature_transform=True, points_per_mesh=4096)
 
 class TestPointNetClsWithFeatureTransform(unittest.TestCase, PointNetClsTestBase):
     def setUp(self):
-        self.setUpTestEntity(num_classes=37, feature_transform=True, number_of_sample_points=2137)
+        self.setUpTestEntity(num_classes=37, feature_transform=True, points_per_mesh=2137)

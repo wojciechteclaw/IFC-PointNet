@@ -25,7 +25,7 @@ class IfcPointNetDataset:
 	
 	def __getitem__(self, idx):
 		return self._data[idx]
-
+	
 	def load(self):
 		path = self.get_path()
 		self._data = torch.load(path)

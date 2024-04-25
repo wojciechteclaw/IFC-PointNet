@@ -21,7 +21,7 @@ class Extractor:
 	@property
 	def ifc_class(self):
 		# Assume that class name is the first part of the file name and is separated by '_'
-		return osp.basename(self._file_path).split('_')[0].lower()
+		return osp.basename(self._file_path).split('_')[1].lower()
 
 	@property
 	def normalization_strategy(self):
