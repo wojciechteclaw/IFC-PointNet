@@ -12,7 +12,7 @@ class PointNetClsTestBase():
         self.x = torch.randn((self.random_number_of_meshes, 3, points_per_mesh), dtype=torch.float32)
 
     def test_classification_output_shape(self):
-        log_softmax_output, _, _ = self.pointnetcls(self.x)
+        log_softmax_output, _ = self.pointnetcls(self.x)
         expected_shape = (self.random_number_of_meshes, self.k)
         self.assertEqual(log_softmax_output.shape, expected_shape)
 
@@ -23,9 +23,8 @@ class PointNetClsTestBase():
             self.assertIsNone(self.pointnetcls.feat.fstn)
 
     def test_no_nan_in_output(self):
-        log_softmax_output, trans, trans_feat = self.pointnetcls(self.x)
+        log_softmax_output, trans_feat = self.pointnetcls(self.x)
         self.assertFalse(torch.isnan(log_softmax_output).any())
-        self.assertFalse(torch.isnan(trans).any())
         if self.feature_transform:
             self.assertFalse(torch.isnan(trans_feat).any())
 
