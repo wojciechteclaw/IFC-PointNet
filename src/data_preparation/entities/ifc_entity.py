@@ -4,7 +4,7 @@ import uuid
 import pickle
 import trimesh
 import os.path as osp
-
+import sys
 from src.data_preparation.entities.ifc_geometry_entity import IfcGeometryEntity
 
 

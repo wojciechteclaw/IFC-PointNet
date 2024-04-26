@@ -44,10 +44,8 @@ class DatasetSettings:
 	def __get_valid_ifc_categories(self, ifc_categories: List[str] = []):
 		"""
 		Retrieves and validates IFC classes from the specified categories or the directory structure.
-
 		Args:
 			ifc_categories (List[str]): Specific IFC classes to validate.
-
 		Returns:
 			List[str]: A list of valid IFC categories based on directory presence and item count criteria.
 		"""
@@ -69,10 +67,8 @@ class DatasetSettings:
 	def __get_dataset_name(self, initial_name):
 		"""
 		Generates or confirms a dataset name based on input and configuration.
-
 		Args:
 			initial_name (str): Initial name suggestion for the dataset.
-
 		Returns:
 			str: The confirmed or generated dataset name.
 		"""

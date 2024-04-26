@@ -26,8 +26,6 @@ class DatasetGenerator:
 		self._ifc_classes_map = {}
 	
 	def process_data(self):
-		if not osp.exists(self.dataset_settings.dataset_path):
-			os.makedirs(self.dataset_settings.dataset_path)
 		if self.datasets_exist():
 			self.load_datasets()
 		else:
@@ -38,7 +36,7 @@ class DatasetGenerator:
 			testing_data_path = osp.join(self.dataset_settings.dataset_path, self.testing_dataset_name)
 			validating_data_path = osp.join(self.dataset_settings.dataset_path, self.validating_dataset_name)
 			
-			# Assume that ifc entities are splited into training, testing and validating data dirs
+			# Assume that ifc entities are split into training, testing and validating data dirs
 			self.get_ifc_classes_map(validating_data_paths)
 			
 			training_dataset = self.create_dataset(training_data_paths, training_data_path)
@@ -51,7 +49,7 @@ class DatasetGenerator:
 		return self._training_dataset, self._testing_dataset, self._validating_dataset
 	
 	def get_ifc_classes_map(self, data_paths:List[str]):
-		ifc_classes = [os.path.basename(path).split("_")[0] for path in data_paths]
+		ifc_classes = [os.path.basename(path).split("_")[1].split(".")[0] for path in data_paths]
 		self._ifc_classes_map = {ifc_class: i for i, ifc_class in enumerate(set(ifc_classes))}
 		with open(osp.join(self.dataset_settings.dataset_path, self.ifc_classes_map_file_name), "w") as f:
 			json.dump(self._ifc_classes_map, f)

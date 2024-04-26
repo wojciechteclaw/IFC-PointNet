@@ -2,6 +2,7 @@ import os
 import os.path as osp
 
 import torch
+from tqdm import tqdm
 
 from src.dataset.ifc_entity_processor_factory import IfcEntityProcessorFactory
 from src.dataset.settings.dataset_settings import DatasetSettings
@@ -31,7 +32,7 @@ class IfcPointNetDataset:
 		self._data = torch.load(path)
 	
 	def process(self):
-		for file in os.listdir(self.dataset_path):
+		for file in tqdm(os.listdir(self.dataset_path), desc="Processing dataset"):
 			file_path = osp.join(self.dataset_path, file)
 			extractor = IfcEntityProcessorFactory.get_extractor(file_path)
 			points, ifc_class = extractor.extract(self.dataset_settings.number_of_point_per_mesh)
