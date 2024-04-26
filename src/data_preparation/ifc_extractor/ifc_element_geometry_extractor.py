@@ -16,7 +16,7 @@ class IfcElementGeometryExtractor:
 		self._source_model_name = source_model_name
 		self._settings = settings
 		
-	def get_geometry(self):
+	def get_geometry(self, rotate_to_identity=True):
 		try:
 			shape = ifcopenshell.geom.create_shape(self._settings, self._ifc_element)
 			if shape:
@@ -26,7 +26,9 @@ class IfcElementGeometryExtractor:
 				location = placement[:,3][0:3]
 				rotation = placement[:3, :3]
 				guid = shape.guid
-				
+				if rotate_to_identity:
+					vertices, rotation = self.rotate_to_identity_rotation_matrix(vertices, rotation)
+
 				return IfcGeometryEntity(faces=faces,
 										 guid=guid,
 										 location=location,
@@ -37,7 +39,10 @@ class IfcElementGeometryExtractor:
 			pass
 		return IfcGeometryEntity()
 		
-			
+		
+	def rotate_to_identity_rotation_matrix(self, vertices, rotation_matrix):
+		return np.dot(vertices, rotation_matrix.T), np.eye(3)
+	
 		
 	def extract_geometry(self):
 		geometry_entity = self.get_geometry()

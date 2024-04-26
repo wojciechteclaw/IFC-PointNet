@@ -4,7 +4,7 @@ import uuid
 import pickle
 import trimesh
 import os.path as osp
-
+import sys
 from src.data_preparation.entities.ifc_geometry_entity import IfcGeometryEntity
 
 
@@ -39,7 +39,7 @@ class IfcEntity:
 			logging.error(f"Error while dumping the file from {self.source_file_name} with guid: {self.global_id}")
 	
 	def get_file_name(self):
-		return f"{self._object_class}_{uuid.uuid4()}.pkl".lower()
+		return f"{uuid.uuid4()}_{self._object_class}.pkl".lower()
 	
 	def get_trimesh(self):
 		return trimesh.Trimesh(vertices=self.vertices, faces=self.faces)
