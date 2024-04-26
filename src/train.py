@@ -1,5 +1,9 @@
+import os
+
 import torch
 import os.path as osp
+
+from tqdm import tqdm
 
 from src.dataset.dataset_generator import DatasetGenerator
 from src.dataset.normalization.enums.normalization_strategy import NormalizationStrategy
@@ -20,13 +24,13 @@ def train_epoch(model: torch.nn.Module,
 				optimizer: torch.optim.Optimizer):
     model.train()
     total_loss, total_acc = 0, 0
-    for batch in loader:
+    for batch in tqdm(loader, "Training", colour="green"):
         points, labels = batch
         points = points.to(device)
         labels = labels.to(device)
         optimizer.zero_grad()
         # based on https://github.com/yanx27/Pointnet_Pointnet2_pytorch/blob/master/models/pointnet_utils.py#L88
-        logits, _, trans_feat = model(points)
+        logits, trans_feat = model(points)
         loss = loss_fn(logits, labels, trans_feat)
         #
         acc = calculate_accuracy(logits, labels)
@@ -48,7 +52,7 @@ def validate_model(model: torch.nn.Module,
             points = points.to(device)
             labels = labels.to(device)
             # based on https://github.com/yanx27/Pointnet_Pointnet2_pytorch/blob/master/models/pointnet_utils.py#L88
-            logits, _, trans_feat = model(points)
+            logits, trans_feat = model(points)
             loss = loss_fn(logits, labels, trans_feat)
             #
             acc = calculate_accuracy(logits, labels)
@@ -67,32 +71,32 @@ def train(model: torch.nn.Module,
           model_save_path):
     
     best_acc = 0
+    torch.save(model, model_save_path.replace(".pth", "_model.pth"))
     model.to(device)
     for epoch in range(epochs):
         train_loss, train_acc = train_epoch(model, train_loader, device, loss_fn, optimizer)
+        print(f'\nEpoch {epoch}, Train Loss: {train_loss:.4f}, Train Acc: {train_acc:.4f}')
         if epoch % 8 == 0 and epoch != 0:
             val_loss, val_acc = validate_model(model, validation_loader, device, loss_fn)
-            print(f'Epoch {epoch}, Train Loss: {train_loss:.4f}, Train Acc: {train_acc:.4f}, Val Loss: {val_loss:.4f}, Val Acc: {val_acc:.4f}')
+            print(f'\nVALIDATION Epoch {epoch} Val Loss: {val_loss:.4f}, Val Acc: {val_acc:.4f}')
             if val_acc > best_acc:
                 best_acc = val_acc
                 torch.save(model.state_dict(), model_save_path)
-        print(f'Epoch {epoch}, Train Loss: {train_loss:.4f}, Train Acc: {train_acc:.4f}, Val Loss: {val_loss:.4f}, Val Acc: {val_acc:.4f}')
 
     test_loss, test_acc = validate_model(model, test_loader, device, loss_fn)
-    print(f'Test Loss: {test_loss:.4f}, Test Acc: {test_acc:.4f}')
+    print(f'\nTest Loss: {test_loss:.4f}, Test Acc: {test_acc:.4f}')
 
 if __name__ == "__main__":
     
     settings = {
-        "raw_data_path": "../ready",
+        "raw_data_path": "../data",
         "output_path": "../pointnet_results",
         "minimum_number_of_items_for_class": 256,
         "number_of_point_per_mesh": 2048,
         "normalization": NormalizationStrategy.ZERO_TO_ONE,
-        "ifc_classes": ["IfcWall", "IfcSlab", "IfcDoor", "IfcWindow", "IfcBeam", "IfcColumn", "IfcStair", "IfcFlowFitting"],
-        "training_split_ratio": 0.70,
-        "testing_split_ratio": 0.15,
-        "validation_split_ratio": 0.15
+        "training_split_ratio": 0.8,
+        "testing_split_ratio": 0.1,
+        "validation_split_ratio": 0.1
     }
     
     dataset_settings = DatasetSettings(**settings)
@@ -107,11 +111,14 @@ if __name__ == "__main__":
     validation_loader = torch.utils.data.DataLoader(validation_dataset, batch_size=32, shuffle=True, num_workers=4)
     test_loader = torch.utils.data.DataLoader(test_dataset, batch_size=32, shuffle=False, num_workers=4)
     
-    model_path = osp.join(dataset_settings.output_path, "pointnet_model.pth")
+    model_path = osp.join(dataset_settings.output_path, dataset_settings.dataset_name, "pointnet_model.pth")
     
-    model = PointNetClassifier(num_classes=NUMBER_OF_CLASSES)
+    model = PointNetClassifier(num_classes=NUMBER_OF_CLASSES, feature_transform=True)
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     loss_fn = LossFunction()
     optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
+
+    loss_fn.to(device)
+    model.to(device)
     
     train(model, train_loader, validation_loader, test_loader, epochs, loss_fn, device, optimizer, model_path)

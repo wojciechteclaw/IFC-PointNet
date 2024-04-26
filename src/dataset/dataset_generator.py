@@ -50,7 +50,7 @@ class DatasetGenerator:
 	
 	def get_ifc_classes_map(self, data_paths:List[str]):
 		ifc_classes = [os.path.basename(path).split("_")[1].split(".")[0] for path in data_paths]
-		self._ifc_classes_map = {ifc_class: i for i, ifc_class in enumerate(set(ifc_classes))}
+		self._ifc_classes_map = {ifc_class.lower(): i for i, ifc_class in enumerate(set(ifc_classes))}
 		with open(osp.join(self.dataset_settings.dataset_path, self.ifc_classes_map_file_name), "w") as f:
 			json.dump(self._ifc_classes_map, f)
 	
