@@ -49,4 +49,4 @@ class PointNetClassifier(nn.Module):
         x = self.dropout(x)
         x = self.fc3(x)
         x = F.log_softmax(x, dim=1)
-        return F.log_softmax(x, dim=1), trans_feat
+        return x, trans_feat
