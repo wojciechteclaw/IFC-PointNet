@@ -75,7 +75,8 @@ def train(model: torch.nn.Module,
           device: torch.device,
           optimizer: torch.optim.Optimizer,
           model_save_path:str,
-          validation_interval:int=8):
+          validation_interval:int=8,
+          include_trans_feat_in_loss:bool=False):
     
     best_acc = 0
     torch.save(model, model_save_path.replace(".pth", "_model.pth"))
