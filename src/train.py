@@ -68,7 +68,8 @@ def train(model: torch.nn.Module,
           loss_fn: torch.nn.Module,
           device: torch.device,
           optimizer: torch.optim.Optimizer,
-          model_save_path):
+          model_save_path:str,
+          validation_interval:int=8):
     
     best_acc = 0
     torch.save(model, model_save_path.replace(".pth", "_model.pth"))
@@ -76,7 +77,7 @@ def train(model: torch.nn.Module,
     for epoch in range(epochs):
         train_loss, train_acc = train_epoch(model, train_loader, device, loss_fn, optimizer)
         print(f'\nEpoch {epoch}, Train Loss: {train_loss:.4f}, Train Acc: {train_acc:.4f}')
-        if epoch % 8 == 0 and epoch != 0:
+        if epoch % validation_interval == 0 and epoch != 0:
             val_loss, val_acc = validate_model(model, validation_loader, device, loss_fn)
             print(f'\nVALIDATION Epoch {epoch} Val Loss: {val_loss:.4f}, Val Acc: {val_acc:.4f}')
             if val_acc > best_acc:
@@ -121,4 +122,4 @@ if __name__ == "__main__":
     loss_fn.to(device)
     model.to(device)
     
-    train(model, train_loader, validation_loader, test_loader, epochs, loss_fn, device, optimizer, model_path)
+    train(model, train_loader, validation_loader, test_loader, epochs, loss_fn, device, optimizer, model_path, validation_interval=2)
