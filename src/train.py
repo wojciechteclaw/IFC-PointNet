@@ -32,7 +32,6 @@ def train_epoch(model: torch.nn.Module,
         # based on https://github.com/yanx27/Pointnet_Pointnet2_pytorch/blob/master/models/pointnet_utils.py#L88
         logits, trans_feat = model(points)
         loss = loss_fn(logits, labels, trans_feat)
-        #
         acc = calculate_accuracy(logits, labels)
         loss.backward()
         optimizer.step()
@@ -54,7 +53,6 @@ def validate_model(model: torch.nn.Module,
             # based on https://github.com/yanx27/Pointnet_Pointnet2_pytorch/blob/master/models/pointnet_utils.py#L88
             logits, trans_feat = model(points)
             loss = loss_fn(logits, labels, trans_feat)
-            #
             acc = calculate_accuracy(logits, labels)
             total_loss += loss.item()
             total_acc += acc.item()
@@ -76,10 +74,10 @@ def train(model: torch.nn.Module,
     model.to(device)
     for epoch in range(epochs):
         train_loss, train_acc = train_epoch(model, train_loader, device, loss_fn, optimizer)
-        print(f'\nEpoch {epoch}, Train Loss: {train_loss:.4f}, Train Acc: {train_acc:.4f}')
+        print(f'\nEpoch {epoch + 1}, Train Loss: {train_loss:.4f}, Train Acc: {train_acc:.4f}')
         if epoch % validation_interval == 0 and epoch != 0:
             val_loss, val_acc = validate_model(model, validation_loader, device, loss_fn)
-            print(f'\nVALIDATION Epoch {epoch} Val Loss: {val_loss:.4f}, Val Acc: {val_acc:.4f}')
+            print(f'\nVALIDATION Epoch {epoch + 1} Val Loss: {val_loss:.4f}, Val Acc: {val_acc:.4f}')
             if val_acc > best_acc:
                 best_acc = val_acc
                 torch.save(model.state_dict(), model_save_path)
@@ -95,6 +93,7 @@ if __name__ == "__main__":
         "minimum_number_of_items_for_class": 256,
         "number_of_point_per_mesh": 2048,
         "normalization": NormalizationStrategy.ZERO_TO_ONE,
+        "ifc_classes": ["IfcWall", "IfcSlab", "IfcDoor", "IfcWindow"],
         "training_split_ratio": 0.8,
         "testing_split_ratio": 0.1,
         "validation_split_ratio": 0.1
