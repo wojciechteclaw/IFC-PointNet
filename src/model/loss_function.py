@@ -29,7 +29,7 @@ class LossFunction(torch.nn.Module):
 		super(LossFunction, self).__init__()
 		self.mat_diff_loss_scale = mat_diff_loss_scale
 	
-	def forward(self, pred, target, trans_feat, weight=None):
+	def forward(self, pred, target, trans_feat=None, weight=None):
 		"""
         Forward pass for calculating the loss.
 
@@ -43,6 +43,8 @@ class LossFunction(torch.nn.Module):
             torch.Tensor: The computed total loss combining nll_loss and the scaled matrix difference loss.
         """
 		loss = F.nll_loss(pred, target, weight=weight)
+		if trans_feat is None:
+			return loss
 		mat_diff_loss = feature_transform_reguliarzer(trans_feat)
 		total_loss = loss + mat_diff_loss * self.mat_diff_loss_scale
 		return total_loss

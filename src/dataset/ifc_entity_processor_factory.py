@@ -3,6 +3,7 @@ import os.path as osp
 from src.dataset.extractors.extractor import Extractor
 from src.dataset.extractors.obj_entity_extractor import ObjEntityExtractor
 from src.dataset.extractors.pickle_entity_extractor import PickleEntityExtractor
+from src.dataset.normalization.enums.normalization_strategy import NormalizationStrategy
 
 
 class IfcEntityProcessorFactory:
@@ -12,7 +13,7 @@ class IfcEntityProcessorFactory:
 	"""
 	
 	@staticmethod
-	def get_extractor(file_path: str) -> Extractor:
+	def get_extractor(file_path: str, normalization_strategy: NormalizationStrategy) -> Extractor:
 		"""
 		Returns an extractor instance appropriate for the given file path based on its extension.
 		Args:
@@ -33,8 +34,8 @@ class IfcEntityProcessorFactory:
 		file_extension = osp.basename(file_path).split('.')[-1]
 		match file_extension:
 			case 'obj':
-				return ObjEntityExtractor(file_path)
+				return ObjEntityExtractor(file_path, normalization_strategy)
 			case 'pkl':
-				return PickleEntityExtractor(file_path)
+				return PickleEntityExtractor(file_path, normalization_strategy)
 			case _:
 				raise ValueError(f'Unsupported file extension: {file_extension}')

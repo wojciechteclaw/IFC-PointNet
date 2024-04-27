@@ -134,3 +134,8 @@ class DatasetSettings:
 	def training_data_ratio(self):
 		"""float: Returns the training data split ratio from the DataSplit object."""
 		return self._datasplit.training_ratio
+
+	@property
+	def normalization(self):
+		"""NormalizationStrategy: Returns the normalization strategy for the dataset."""
+		return self._normalization

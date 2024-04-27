@@ -29,7 +29,7 @@ class PointNetClassifier(nn.Module):
         self.fc1 = DenseLinearBN(1024, 512)
         self.fc2 = DenseLinearBN(512, 256)
         self.fc3 = nn.Linear(256, num_classes)
-        self.dropout = nn.Dropout(p=0.3)
+        self.dropout = nn.Dropout(p=0.25)
 
     def forward(self, x: torch.Tensor) -> tuple:
         """
@@ -45,6 +45,7 @@ class PointNetClassifier(nn.Module):
         """
         x, trans, trans_feat = self.feat(x)
         x = self.fc1(x)
+        x = self.dropout(x)
         x = self.fc2(x)
         x = self.dropout(x)
         x = self.fc3(x)

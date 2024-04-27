@@ -21,7 +21,8 @@ def train_epoch(model: torch.nn.Module,
 				loader: torch.utils.data.DataLoader,
 				device:torch.device,
 				loss_fn: torch.nn.Module,
-				optimizer: torch.optim.Optimizer):
+				optimizer: torch.optim.Optimizer,
+                include_trans_feat_in_loss:bool=False):
     model.train()
     total_loss, total_acc = 0, 0
     for batch in tqdm(loader, "Training", colour="green"):
@@ -31,7 +32,10 @@ def train_epoch(model: torch.nn.Module,
         optimizer.zero_grad()
         # based on https://github.com/yanx27/Pointnet_Pointnet2_pytorch/blob/master/models/pointnet_utils.py#L88
         logits, trans_feat = model(points)
-        loss = loss_fn(logits, labels, trans_feat)
+        if include_trans_feat_in_loss:
+            loss = loss_fn(logits, labels, trans_feat)
+        else:
+            loss = loss_fn(logits, labels)
         acc = calculate_accuracy(logits, labels)
         loss.backward()
         optimizer.step()
@@ -42,7 +46,8 @@ def train_epoch(model: torch.nn.Module,
 def validate_model(model: torch.nn.Module,
 				   loader: torch.utils.data.DataLoader,
 				   device:torch.device,
-				   loss_fn: torch.nn.Module):
+				   loss_fn: torch.nn.Module,
+                   include_trans_feat_in_loss:bool=False):
     model.eval()
     total_loss, total_acc = 0, 0
     with torch.no_grad():
@@ -52,7 +57,10 @@ def validate_model(model: torch.nn.Module,
             labels = labels.to(device)
             # based on https://github.com/yanx27/Pointnet_Pointnet2_pytorch/blob/master/models/pointnet_utils.py#L88
             logits, trans_feat = model(points)
-            loss = loss_fn(logits, labels, trans_feat)
+            if include_trans_feat_in_loss:
+                loss = loss_fn(logits, labels, trans_feat)
+            else:
+                loss = loss_fn(logits, labels)
             acc = calculate_accuracy(logits, labels)
             total_loss += loss.item()
             total_acc += acc.item()
@@ -116,9 +124,9 @@ if __name__ == "__main__":
     model = PointNetClassifier(num_classes=NUMBER_OF_CLASSES, feature_transform=True)
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     loss_fn = LossFunction()
-    optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
+    optimizer = torch.optim.Adam(model.parameters(), lr=0.001, betas=(0.9, 0.999), eps=1e-08, weight_decay=1e-4)
 
     loss_fn.to(device)
     model.to(device)
     
-    train(model, train_loader, validation_loader, test_loader, epochs, loss_fn, device, optimizer, model_path, validation_interval=2)
+    train(model, train_loader, validation_loader, test_loader, epochs, loss_fn, device, optimizer, model_path, validation_interval=2, include_trans_feat_in_loss=True)

@@ -34,7 +34,7 @@ class IfcPointNetDataset:
 	def process(self):
 		for file in tqdm(os.listdir(self.dataset_path), desc="Processing dataset"):
 			file_path = osp.join(self.dataset_path, file)
-			extractor = IfcEntityProcessorFactory.get_extractor(file_path)
+			extractor = IfcEntityProcessorFactory.get_extractor(file_path, self.dataset_settings.normalization)
 			points, ifc_class = extractor.extract(self.dataset_settings.number_of_point_per_mesh)
 			tensor = torch.from_numpy(points).float().T
 			ifc_class = self._ifc_classes_map.get(ifc_class, -1)
