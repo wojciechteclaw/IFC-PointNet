@@ -18,6 +18,8 @@ def obj_to_xyz(file_path, point_count=2048, output_directory=False):
 
         # Sample points on the mesh surface
         points = mesh.sample(point_count)
+        points = points.tolist()
+        points = [[round(number, 5) for number in sublist] for sublist in points]
         # Define the path for the output XYZ file
         output_file_name = f"{Path(file_path).stem}_x{scale_factor:.2f}.xyz"
         rootdir = Path(file_path).parent.parent
