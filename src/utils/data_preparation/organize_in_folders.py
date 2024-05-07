@@ -14,7 +14,6 @@ files = [
 ]
 
 # Process each file
-# TODO: Remove comments, code is self-explanatory
 for file in files:
     # Extract category from the file name
     id_number, category = file.split("_", 1)
@@ -29,6 +28,11 @@ for file in files:
         os.makedirs(subfolder_path)
 
     # Move the file into the corresponding subfolder
-    shutil.copy(os.path.join(FOLDER_PATH, file), os.path.join(subfolder_path, file))
+    shutil.copy(os.path.join(FOLDER_PATH, file), os.path.join(subfolder_path, id_number))
+
+
 
 print("Files have been organized into subfolders.")
+
+if __name__ == "__main__":
+    print('test')
