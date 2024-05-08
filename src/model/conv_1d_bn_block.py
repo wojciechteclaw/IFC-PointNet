@@ -4,7 +4,7 @@ import torch
 
 
 class Conv1dBN(nn.Module):
-	def __init__(self, in_channels: int, out_channels: int):
+	def __init__(self, in_channels: int, out_channels: int, use_activation: bool = True):
 		"""
 		Initialize the Conv1dBN module with convolutional and batch normalization layers.
 
@@ -18,14 +18,15 @@ class Conv1dBN(nn.Module):
 		"""
 		super(Conv1dBN, self).__init__()
 		
+		self._use_activation = use_activation
+		
 		self._in_channels = in_channels
 		self._out_channels = out_channels
 		
 		self.conv = nn.Conv1d(in_channels=in_channels,
 							  out_channels=out_channels,
-							  kernel_size=1,
-							  padding="valid")
-		self.bn = nn.BatchNorm1d(out_channels, momentum=0.0)
+							  kernel_size=1)
+		self.bn = nn.BatchNorm1d(out_channels)
 	
 	def forward(self, x: torch.Tensor) -> torch.Tensor:
 		"""
@@ -39,7 +40,8 @@ class Conv1dBN(nn.Module):
 		"""
 		x = self.conv(x)
 		x = self.bn(x)
-		x = F.relu(x)
+		if self._use_activation:
+			x = F.relu(x)
 		return x
 	
 	@property

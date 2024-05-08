@@ -15,7 +15,11 @@ class IfcPointNetDataset:
 	def __init__(self,
 				 dataset_path: str,
 				 dataset_settings: DatasetSettings,
-				 ifc_classes_map: dict = {}):
+				 ifc_classes_map: dict = {},
+				 augment: bool = False,
+				 add_noise: bool = False):
+		self._augment = augment
+		self._add_noise = add_noise
 		self.dataset_path = dataset_path
 		self.dataset_settings = dataset_settings
 		self._data = []
@@ -35,7 +39,7 @@ class IfcPointNetDataset:
 		for file in tqdm(os.listdir(self.dataset_path), desc="Processing dataset"):
 			file_path = osp.join(self.dataset_path, file)
 			extractor = IfcEntityProcessorFactory.get_extractor(file_path, self.dataset_settings.normalization)
-			points, ifc_class = extractor.extract(self.dataset_settings.number_of_point_per_mesh)
+			points, ifc_class = extractor.extract(self.dataset_settings.number_of_point_per_mesh, self._augment, self._add_noise)
 			tensor = torch.from_numpy(points).float().T
 			ifc_class = self._ifc_classes_map.get(ifc_class, -1)
 			self._data.append((tensor, ifc_class))

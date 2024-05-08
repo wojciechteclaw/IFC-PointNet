@@ -39,7 +39,7 @@ class DatasetGenerator:
 			# Assume that ifc entities are split into training, testing and validating data dirs
 			self.get_ifc_classes_map(validating_data_paths)
 			
-			training_dataset = self.create_dataset(training_data_paths, training_data_path)
+			training_dataset = self.create_dataset(training_data_paths, training_data_path, augment=True, add_noise=True)
 			testing_dataset = self.create_dataset(testing_data_paths, testing_data_path)
 			validating_dataset = self.create_dataset(validating_data_paths, validating_data_path)
 			
@@ -58,9 +58,9 @@ class DatasetGenerator:
 		with open(osp.join(self.dataset_settings.dataset_path, self.ifc_classes_map_file_name), "r") as f:
 			self._ifc_classes_map = json.load(f)
 	
-	def create_dataset(self, raw_data_paths: List[str], dataset_dir_path:str):
+	def create_dataset(self, raw_data_paths: List[str], dataset_dir_path:str, augment:bool=False, add_noise:bool=False):
 		self.copy_files_to_directory(raw_data_paths, dataset_dir_path)
-		dataset = IfcPointNetDataset(dataset_dir_path, self._dataset_settings, self._ifc_classes_map)
+		dataset = IfcPointNetDataset(dataset_dir_path, self._dataset_settings, self._ifc_classes_map, augment, add_noise)
 		dataset.process()
 		return dataset
 

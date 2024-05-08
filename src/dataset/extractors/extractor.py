@@ -23,7 +23,7 @@ class Extractor:
         self._normalization_strategy = normalization_strategy
 
     @abstractmethod
-    def extract(self, number_of_points_per_mesh_entity: int):
+    def extract(self, number_of_points_per_mesh_entity: int, augment: bool = False):
         """
         Abstract method to extract data from the file. Must be implemented by subclasses.
         Args:

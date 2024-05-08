@@ -1,5 +1,7 @@
+import numpy as np
 import trimesh
 
+from src.dataset.augmentation.mesh_rotation_augmentation import MeshRotationAugmentation
 from src.dataset.extractors.extractor import Extractor
 from src.dataset.normalization.enums.normalization_strategy import NormalizationStrategy
 from src.dataset.normalization.mesh_normalizer import MeshNormalizer
@@ -19,7 +21,7 @@ class ObjEntityExtractor(Extractor):
 		"""
 		super().__init__(file_path, normalization_strategy)
 
-	def extract(self, number_of_points_per_mesh_entity: int):
+	def extract(self, number_of_points_per_mesh_entity: int, augment: bool = False, add_noise: bool = False):
 		"""
 		Extracts a point cloud from an OBJ file, normalized according to the specified strategy.
 		Args:
@@ -28,6 +30,11 @@ class ObjEntityExtractor(Extractor):
 			tuple: A tuple containing the point cloud data and the IFC class of the mesh.
 		"""
 		mesh = trimesh.load(self.file_path)
+		if augment:
+			mesh = MeshRotationAugmentation.augment_single_element(mesh)
 		normalization_result = MeshNormalizer.normalize(mesh, self.normalization_strategy)
 		point_cloud = normalization_result.mesh.sample(number_of_points_per_mesh_entity)
+		if add_noise:
+			noise = np.random.normal(0, 0.010, (point_cloud.shape))
+			point_cloud += noise
 		return point_cloud, self.ifc_class
