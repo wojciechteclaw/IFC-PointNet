@@ -4,7 +4,7 @@ import torch
 
 
 class DenseLinearBN(nn.Module):
-	def __init__(self, in_channels: int, out_channels: int):
+	def __init__(self, in_channels: int, out_channels: int, use_activation: bool = True):
 		"""
 		Initialize the DenseLinearBN module with a fully connected layer and a batch normalization layer.
 
@@ -17,12 +17,13 @@ class DenseLinearBN(nn.Module):
 			bn (nn.BatchNorm1d): Batch normalization layer.
 		"""
 		super(DenseLinearBN, self).__init__()
+		self._use_activation = use_activation
 		
 		self._in_channels = in_channels
 		self._out_channels = out_channels
 		
 		self.dense = nn.Linear(in_channels, out_channels)
-		self.bn = nn.BatchNorm1d(out_channels, momentum=0.0)
+		self.bn = nn.BatchNorm1d(out_channels)
 	
 	def forward(self, x: torch.Tensor) -> torch.Tensor:
 		"""
@@ -39,7 +40,9 @@ class DenseLinearBN(nn.Module):
 		x = self.dense(x)
 		if x.shape[0] > 1:
 			x = self.bn(x)
-		return F.relu(x)
+		if self._use_activation:
+			x = F.relu(x)
+		return x
 	
 	@property
 	def in_channels(self) -> int:

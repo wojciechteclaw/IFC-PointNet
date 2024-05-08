@@ -1,6 +1,8 @@
 import pickle
 import os
 
+import numpy as np
+
 from src.dataset.extractors.extractor import Extractor
 from src.dataset.normalization.enums.normalization_strategy import NormalizationStrategy
 from src.dataset.normalization.mesh_normalizer import MeshNormalizer
@@ -21,7 +23,7 @@ class PickleEntityExtractor(Extractor):
         """
         super().__init__(file_path, normalization_strategy)
 
-    def extract(self, number_of_points_per_mesh_entity: int):
+    def extract(self, number_of_points_per_mesh_entity: int, augment: bool = False):
         """
         Extracts a point cloud from a Pickle file, normalized according to the specified strategy.
         Args:
