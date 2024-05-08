@@ -2,7 +2,7 @@ import torch
 
 
 def pointnetloss(outputs, labels, m3x3, m64x64, alpha = 0.0001):
-    criterion = torch.nn.CrossEntropyLoss()
+    criterion = torch.nn.NLLLoss()
     bs=outputs.size(0)
     id3x3 = torch.eye(3, requires_grad=True).repeat(bs,1,1)
     id64x64 = torch.eye(64, requires_grad=True).repeat(bs,1,1)

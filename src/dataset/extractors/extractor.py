@@ -43,7 +43,7 @@ class Extractor:
         """
         str: Returns the IFC class derived from the file name, assumed to be the second segment of the filename separated by '_'.
         """
-        return osp.basename(self._file_path).split('_')[1].split('.')[0].lower()
+        return osp.basename(self._file_path).split('_')[0].lower()
 
     @property
     def normalization_strategy(self):

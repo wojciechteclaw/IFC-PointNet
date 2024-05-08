@@ -49,7 +49,7 @@ class DatasetGenerator:
 		return self._training_dataset, self._testing_dataset, self._validating_dataset
 	
 	def get_ifc_classes_map(self, data_paths:List[str]):
-		ifc_classes = [os.path.basename(path).split("_")[1].split(".")[0] for path in data_paths]
+		ifc_classes = [osp.basename(osp.dirname(path)) for path in data_paths]
 		self._ifc_classes_map = {ifc_class.lower(): i for i, ifc_class in enumerate(set(ifc_classes))}
 		with open(osp.join(self.dataset_settings.dataset_path, self.ifc_classes_map_file_name), "w") as f:
 			json.dump(self._ifc_classes_map, f)
@@ -68,7 +68,9 @@ class DatasetGenerator:
 		if not osp.exists(dir_path):
 			os.makedirs(dir_path)
 		for path in paths:
-			shutil.copy(path, dir_path)
+			ifc_class = osp.basename(osp.dirname(path))
+			file_name = osp.basename(path)
+			shutil.copy(path, osp.join(dir_path, ifc_class + "_" + file_name))
 
 	def get_dataset_raw_data_paths(self):
 		training_data_raw_paths = []

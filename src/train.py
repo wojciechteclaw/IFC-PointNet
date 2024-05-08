@@ -87,12 +87,12 @@ def train(model: torch.nn.Module,
 if __name__ == "__main__":
     
     settings = {
-        "raw_data_path": "../data",
+        "raw_data_path": "../sample_sorted_31x1300",
         "output_path": "../pointnet_results",
         "minimum_number_of_items_for_class": 128,
         "number_of_point_per_mesh": 2048,
         "normalization": NormalizationStrategy.ZERO_TO_ONE,
-        "ifc_classes": ["IfcWall", "IfcSlab", "IfcBeam", "IfcWindow", "IfcDoor", "IfcColumn", "IfcStair", "IfcRailing", "IfcFurnishing"],
+        "ifc_classes": ["IfcWall", "IfcSlab", "IfcBeam", "IfcWindow", "IfcDoor", "IfcColumn", "IfcStair"],
         "training_split_ratio": 0.8,
         "testing_split_ratio": 0.1,
         "validation_split_ratio": 0.1
