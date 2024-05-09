@@ -76,10 +76,10 @@ def train(model: torch.nn.Module,
         print(f'\nEpoch {epoch + 1}, Train Loss: {train_loss:.4f}, Train Acc: {train_acc:.4f}')
         if epoch % validation_interval == 0 and epoch != 0:
             val_loss, val_acc = validate_model(model, validation_loader, device, loss_fn)
-            print(f'\nVALIDATION Epoch {epoch + 1} Val Loss: {val_loss:.4f}, Val Acc: {val_acc:.4f}')
             if val_acc > best_acc:
                 best_acc = val_acc
                 torch.save(model.state_dict(), model_save_path)
+            print(f'\nVALIDATION Epoch {epoch + 1} Val Loss: {val_loss:.4f}, Val Acc: {val_acc:.4f}, Best Acc: {best_acc:.4f}')
 
     test_loss, test_acc = validate_model(model, test_loader, device, loss_fn)
     print(f'\nTest Loss: {test_loss:.4f}, Test Acc: {test_acc:.4f}')
